@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>349</height>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,13 +27,13 @@
    </property>
    <widget class="QWidget" name="tab_1">
     <attribute name="title">
-     <string>Download Inventario</string>
+     <string>Inventario</string>
     </attribute>
     <widget class="QgsFileWidget" name="file_widget">
      <property name="geometry">
       <rect>
-       <x>230</x>
-       <y>70</y>
+       <x>220</x>
+       <y>50</y>
        <width>341</width>
        <height>27</height>
       </rect>
@@ -48,15 +48,15 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>70</y>
-       <width>181</width>
+       <x>20</x>
+       <y>50</y>
+       <width>151</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -67,7 +67,7 @@
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>230</y>
+       <y>90</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -79,19 +79,6 @@
      </property>
      <property name="text">
       <string>Download Inventario</string>
-     </property>
-    </widget>
-    <widget class="Line" name="line_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>170</y>
-       <width>571</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
     <widget class="QProgressBar" name="progressBar_inventario">
@@ -112,26 +99,78 @@
       <number>0</number>
      </property>
     </widget>
+    <widget class="QgsFileWidget" name="inventario_path">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>180</y>
+       <width>341</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>180</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Insira arquivo inventario.csv</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>571</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>(OBRIGATÓRIO) Localizar arquivo inventario.csv</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>571</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>(OPCIONAL) Download arquivo inventario.csv</string>
+     </property>
+    </widget>
+    <zorder>groupBox_4</zorder>
+    <zorder>groupBox_3</zorder>
+    <zorder>file_widget</zorder>
+    <zorder>label</zorder>
+    <zorder>inventarioDownload_button</zorder>
+    <zorder>progressBar_inventario</zorder>
+    <zorder>inventario_path</zorder>
+    <zorder>label_3</zorder>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
      <string>Download dados</string>
     </attribute>
-    <widget class="QgsFileWidget" name="inventario_path">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>40</y>
-       <width>351</width>
-       <height>27</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QgsFileWidget" name="data_folder">
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>80</y>
+       <y>90</y>
        <width>351</width>
        <height>27</height>
       </rect>
@@ -174,24 +213,6 @@
      </property>
      <property name="value">
       <number>0</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>40</y>
-       <width>141</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Insira arquivo Inventario</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="rain_checkbox">
@@ -246,7 +267,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>420</x>
        <y>180</y>
        <width>41</width>
        <height>20</height>
@@ -264,54 +285,83 @@
     <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>10</x>
        <y>149</y>
-       <width>541</width>
+       <width>571</width>
        <height>71</height>
       </rect>
      </property>
      <property name="title">
-      <string>Configurações de download</string>
+      <string>(OBRIGATÓRIO) Configurações de download</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>10</x>
        <y>9</y>
-       <width>541</width>
+       <width>571</width>
        <height>121</height>
       </rect>
      </property>
      <property name="title">
-      <string>Arquivos</string>
+      <string>(OBRIGATÓRIO) Arquivos</string>
      </property>
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>80</y>
         <width>171</width>
         <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="text">
        <string>Selecione pasta para salvar</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>171</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Selecione a camada (Polígono)</string>
+      </property>
+     </widget>
+     <widget class="QgsMapLayerComboBox" name="mapLayer_box">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>351</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="showCrs">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <zorder>groupBox</zorder>
     <zorder>groupBox_2</zorder>
-    <zorder>inventario_path</zorder>
     <zorder>data_folder</zorder>
     <zorder>download_button</zorder>
     <zorder>progressBar</zorder>
-    <zorder>label_3</zorder>
     <zorder>rain_checkbox</zorder>
     <zorder>flow_checkbox</zorder>
     <zorder>buffer_spinbox</zorder>
@@ -324,6 +374,11 @@
    <class>QgsFileWidget</class>
    <extends>QWidget</extends>
    <header>qgsfilewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QgsMapLayerComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qgsmaplayercombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

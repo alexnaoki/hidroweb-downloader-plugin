@@ -209,53 +209,62 @@ class HidrowebDownloader:
 
 
     def polygon_station(self):
-        layer = list(QgsProject.instance().mapLayers().values())
-        feat = layer[-1].getFeatures()
-        for l in feat:
-            feat_geometry = l.geometry()
-        # self.feat_geometry = feat_geometry
-
-        if self.dlg.buffer_spinbox.value() == 0:
-            pass
+        error = self.check_errors()
+        if error:
+            print('Error')
+            # sys.exit()
         else:
-            feat_geometry = self.create_buffer_polygon(feat_geometry=feat_geometry, distance=self.dlg.buffer_spinbox.value(), segments=5)
+            layer_input = self.dlg.mapLayer_box.currentLayer()
+            print(layer_input)
+            feat = layer_input.getFeatures()
+            for l in feat:
+                feat_geometry = l.geometry()
 
-        with open(self.dlg.inventario_path.filePath(), encoding='utf8') as csvfile:
-            total = len(list(csv.DictReader(csvfile)))
-            print(total)
+            if self.dlg.buffer_spinbox.value() == 0:
+                pass
+            else:
+                feat_geometry = self.create_buffer_polygon(feat_geometry=feat_geometry, distance=self.dlg.buffer_spinbox.value(), segments=5)
 
-        with open(self.dlg.inventario_path.filePath(), encoding='utf8') as csvfile:
-            data = csv.DictReader(csvfile)
+            with open(self.dlg.inventario_path.filePath(), encoding='utf8') as csvfile:
+                total = len(list(csv.DictReader(csvfile)))
+                print(total)
 
-            i = 0
-            for row in data:
-                i += 1
-                # print(row)
-                self.dlg.progressBar.setValue(i/float(total)*100)
-                if feat_geometry.contains(QgsPointXY(float(row['Longitude']), float(row['Latitude']))):
-                    print('aqui')
-                    print(row['TipoEstacao'])
-                    if (self.dlg.rain_checkbox.isChecked()) and (not self.dlg.flow_checkbox.isChecked()) and (int(row['TipoEstacao'])==2):
-                        print('rain checkbox')
-                        self.point_station(codigo=row['Codigo'],
-                                                  tipoEstacao=row['TipoEstacao'],
-                                                  lon=row['Longitude'],
-                                                  lat=row['Latitude'])
-                    elif (self.dlg.flow_checkbox.isChecked()) and (not self.dlg.rain_checkbox.isChecked()) and (int(row['TipoEstacao'])==1):
-                        print('flow checkbox')
-                        print(row['Codigo'])
-                        self.point_station(codigo=row['Codigo'],
-                                                  tipoEstacao=row['TipoEstacao'],
-                                                  lon=row['Longitude'],
-                                                  lat=row['Latitude'])
-                    elif (self.dlg.rain_checkbox.isChecked()) and (self.dlg.flow_checkbox.isChecked()):
-                        print('both rain and flow checkbox')
-                        self.point_station(codigo=row['Codigo'],
-                                                  tipoEstacao=row['TipoEstacao'],
-                                                  lon=row['Longitude'],
-                                                  lat=row['Latitude'])
-                    else:
-                        print('Nada selecionado')
+            with open(self.dlg.inventario_path.filePath(), encoding='utf8') as csvfile:
+                data = csv.DictReader(csvfile)
+
+                i = 0
+                for row in data:
+                    i += 1
+                    # print(row)
+                    self.dlg.progressBar.setValue(i/float(total)*100)
+                    if feat_geometry.contains(QgsPointXY(float(row['Longitude']), float(row['Latitude']))):
+                        print('aqui')
+                        print(row['TipoEstacao'])
+                        if (self.dlg.rain_checkbox.isChecked()) and (not self.dlg.flow_checkbox.isChecked()) and (int(row['TipoEstacao'])==2):
+                            print('rain checkbox')
+                            self.point_station(codigo=row['Codigo'],
+                                                      tipoEstacao=row['TipoEstacao'],
+                                                      lon=row['Longitude'],
+                                                      lat=row['Latitude'])
+                        elif (self.dlg.flow_checkbox.isChecked()) and (not self.dlg.rain_checkbox.isChecked()) and (int(row['TipoEstacao'])==1):
+                            print('flow checkbox')
+                            print(row['Codigo'])
+                            self.point_station(codigo=row['Codigo'],
+                                                      tipoEstacao=row['TipoEstacao'],
+                                                      lon=row['Longitude'],
+                                                      lat=row['Latitude'])
+                        elif (self.dlg.rain_checkbox.isChecked()) and (self.dlg.flow_checkbox.isChecked()):
+                            print('both rain and flow checkbox')
+                            self.point_station(codigo=row['Codigo'],
+                                                      tipoEstacao=row['TipoEstacao'],
+                                                      lon=row['Longitude'],
+                                                      lat=row['Latitude'])
+                        else:
+                            print('Nada selecionado')
+
+
+                # print(self.dlg.inventario_path.filePath()[:-3])
+            self.iface.messageBar().pushMessage('Success', 'Programa finalizado!', level=Qgis.Success)
 
     def point_station(self, codigo, tipoEstacao, lon, lat):
         layers = list(QgsProject.instance().mapLayers().values())
@@ -429,3 +438,23 @@ class HidrowebDownloader:
 
             print('Arquivo inventario.csv criado')
             self.dlg.inventario_path.setFilePath(os.path.join(self.dlg.file_widget.filePath(), 'inventario.csv'))
+            self.iface.messageBar().pushMessage('Success', 'Download do inventario.csv concluído!', level=Qgis.Success)
+
+    def check_errors(self):
+        error = False
+        print(self.dlg.inventario_path.filePath()[-4:])
+        if (self.dlg.inventario_path.filePath() == None) or (self.dlg.inventario_path.filePath()=='') or (not self.dlg.inventario_path.filePath()[-4:]=='.csv'):
+            print(self.dlg.inventario_path.filePath())
+            self.iface.messageBar().pushMessage("Error", "inventario.csv não encontrado", level=Qgis.Critical, duration=5)
+            error = True
+        if self.dlg.mapLayer_box.currentLayer() == None:
+            self.iface.messageBar().pushMessage("Error", "Shapefile (Polígono) não encontrado", level=Qgis.Critical, duration=5)
+            error = True
+        if (not self.dlg.mapLayer_box.currentLayer().crs().authid()=='EPSG:4674') and (not self.dlg.mapLayer_box.currentLayer().crs().authid()=='EPSG:4326'):
+            print()
+            self.iface.messageBar().pushMessage("Error", "Shapefile (Polígono) com Sistema de Coordenadas incorreto. O correto é Sirgas2000 ou WGS84.", level=Qgis.Critical, duration=5)
+            error = True
+        if (self.dlg.data_folder.filePath() == None) or (self.dlg.data_folder.filePath() == ''):
+            self.iface.messageBar().pushMessage("Error", "Nenhuma pasta selecionada para o download", level=Qgis.Critical, duration=5)
+            error = True
+        return error
